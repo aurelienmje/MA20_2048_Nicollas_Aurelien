@@ -1,5 +1,5 @@
 # Auteur: Aurélien Nicollas
-# Date: 05/02/2026
+# Date: 12/02/2026
 # Fonction: Afficher un 2048
 
 # IMPORTS
@@ -17,6 +17,7 @@ font = Font(family="Century Gothic", size=22, weight=BOLD)
 
 # FONCTIONS
 
+# Fontion qui sert à afficher les cases
 def display():
     for line in range(4):
         for col in range(4):
@@ -26,7 +27,7 @@ def display():
             label_text = labels[line][col].cget("text")
             labels[line][col].config(bg=colors[label_text])
 
-# CONSTANTE
+# CONSTANTES
 
 colors = {
     "":"#f5f5f5",

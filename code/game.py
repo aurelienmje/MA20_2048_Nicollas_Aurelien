@@ -1,6 +1,6 @@
 # Auteur: Aurélien Nicollas
-# Date: 05/02/2026
-# Fonction: Afficher un 2048
+# Date: 12/02/2026
+# Fonction: Faire les règles du jeu
 
 # IMPORTS
 
