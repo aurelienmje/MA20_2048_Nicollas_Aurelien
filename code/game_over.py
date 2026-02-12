@@ -26,7 +26,7 @@ def play():
 title = Label(root, text="Game over !", font=font, fg=("#ff5757"))
 title.pack(pady=80)
 
-btn_play = Button(root, text="Jouer !", bg=("#8ad3f2"), fg="white", font=btn_font, width=14, command=play)
+btn_play = Button(root, text="Rejouer !", bg=("#8ad3f2"), fg="white", font=btn_font, width=14, command=play)
 btn_play.pack(side=BOTTOM, pady=100)
 
 # DÉMARRAGE
