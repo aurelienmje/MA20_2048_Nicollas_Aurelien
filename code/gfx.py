@@ -13,6 +13,7 @@ from tkinter.font import *
 
 root = Tk()
 root.geometry("600x600")
+root.title("Jeu du 2048")
 font = Font(family="Century Gothic", size=22, weight=BOLD)
 
 # FONCTIONS

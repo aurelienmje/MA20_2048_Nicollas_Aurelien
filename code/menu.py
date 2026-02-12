@@ -13,6 +13,7 @@ from tkinter.font import *
 
 root = Tk()
 root.geometry("600x600")
+root.title("Jeu du 2048 - Menu")
 font = Font(family="Century Gothic", size=100, weight=BOLD)
 btn_font = Font(family="Century Gothic", size=50, weight=NORMAL)
 
