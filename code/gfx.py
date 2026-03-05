@@ -8,6 +8,8 @@ import random
 from time import sleep
 from tkinter import *
 from tkinter.font import *
+from tkinter.messagebox import *
+from rules import *
 
 # FENÊTRE
 
@@ -19,13 +21,21 @@ font = Font(family="Century Gothic", size=22, weight=BOLD)
 # FONCTIONS
 
 # Fonction qui sert à afficher les cases
-def display(a):
+def display():
     for line in range(4):
         for col in range(4):
-            labels[line][col].config(text=cases[line][col])
-            print(cases[line][col])
-            label_text = labels[line][col].cget("text")
+            labels[line][col].config(text="")
+            if not cases[line][col] == 0:
+                labels[line][col].config(text=cases[line][col])
+                label_text = labels[line][col].cget("text")
+            else:
+                label_text = 0
             labels[line][col].config(bg=colors[label_text])
+
+
+def move(event):
+    key_pressed(event)
+    display()
 
 # CONSTANTES
 
@@ -48,17 +58,6 @@ colors = {
 
 # TABLEAUX
 
-# Tableau des numéros de cases
-cases = [[2, 4, 8, 16],
-         [32, 64, 128, 256],
-         [512, 1024, 2048, 4096],
-         [8192, 0, 0, 0]]
-
-cases_vides = [[0, 0, 0, 0],
-               [0, 0, 0, 0],
-               [0, 0, 0, 0],
-               [0, 0, 0, 0]]
-
 # Tableau des labels
 labels = [[None,None,None,None],
           [None,None,None,None],
@@ -74,11 +73,13 @@ frm_cases.pack(pady=40)
 
 for line in range(4):
     for col in range(4):
-        labels[line][col] = Label(frm_cases, text=cases[line][col], width=6, height=3, font=font, fg="white")
-        print(cases[line][col])
+        if not cases[line][col] == 0:
+            labels[line][col] = Label(frm_cases, text=cases[line][col], width=6, height=3, font=font, fg="white")
+            label_text = labels[line][col].cget("text")
+        else:
+            labels[line][col] = Label(frm_cases, width=6, height=3, font=font, fg="white")
+            label_text = 0
         labels[line][col].grid(row=line, column=col, padx=5, pady=5)
-        label_text = labels[line][col].cget("text")
         labels[line][col].config(bg=colors[label_text])
 
-root.bind('<space>', display)
-root.mainloop()
+root.bind('<Key>', move)
