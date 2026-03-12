@@ -4,8 +4,6 @@
 
 # IMPORTS
 
-import random
-from time import sleep
 from tkinter import *
 from tkinter.font import *
 from tkinter.messagebox import *
@@ -32,10 +30,6 @@ def display():
                 label_text = 0
             labels[line][col].config(bg=colors[label_text])
 
-
-def move(event):
-    key_pressed(event)
-    display()
 
 # CONSTANTES
 
@@ -82,4 +76,7 @@ for line in range(4):
         labels[line][col].grid(row=line, column=col, padx=5, pady=5)
         labels[line][col].config(bg=colors[label_text])
 
-root.bind('<Key>', move)
+root.bind('<Up>', Up)
+root.bind('<Down>', Down)
+root.bind('<Left>', Left)
+root.bind('<Right>', Right)
