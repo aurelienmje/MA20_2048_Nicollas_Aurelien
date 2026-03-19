@@ -6,7 +6,6 @@
 
 from tkinter import *
 from tkinter.font import *
-from tkinter.messagebox import *
 from rules import *
 
 # FENÊTRE
