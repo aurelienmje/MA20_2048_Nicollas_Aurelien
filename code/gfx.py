@@ -7,13 +7,15 @@
 from tkinter import *
 from tkinter.font import *
 from rules import *
+import rules
 
 # FENÊTRE
 
 root = Tk()
-root.geometry("600x600")
+root.geometry("600x650")
 root.title("Jeu du 2048")
 font = Font(family="Century Gothic", size=22, weight=BOLD)
+font_score = Font(family="Century Gothic", size=12, weight=BOLD)
 
 # FONCTIONS
 
@@ -28,6 +30,9 @@ def display():
             else:
                 label_text = 0
             labels[line][col].config(bg=colors[label_text])
+    score_text = f"Score : {rules.score}"
+    score_lbl.config(text=score_text)
+    print(rules.score)
 
 
 # CONSTANTES
@@ -57,6 +62,11 @@ labels = [[None,None,None,None],
           [None,None,None,None],
           [None,None,None,None]]
 
+# FRAME BOUTON MENU
+
+menu = Button(root, text="Menu", command=menu)
+menu.pack(anchor=E)
+
 # FRAME PRINCIPALE
 
 frm_cases = Frame(root)
@@ -74,6 +84,16 @@ for line in range(4):
             label_text = 0
         labels[line][col].grid(row=line, column=col, padx=5, pady=5)
         labels[line][col].config(bg=colors[label_text])
+
+frm_btns = Frame(root, width=600, height=50)
+frm_btns.pack()
+
+btn_restart = Button(frm_btns, text="Recommencer", width=20, height=2, command=restart)
+btn_restart.config(bg="white")
+btn_restart.pack(side=LEFT, padx=70)
+
+score_lbl = Label(frm_btns, text="Score : 0", font=font_score)
+score_lbl.pack(side=RIGHT, padx=90)
 
 root.bind('<Up>', Up)
 root.bind('<Down>', Down)

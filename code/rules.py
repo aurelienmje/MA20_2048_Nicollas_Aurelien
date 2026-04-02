@@ -4,14 +4,51 @@
 from idlelib.autocomplete_w import KEYPRESS_VIRTUAL_EVENT_NAME
 #IMPORTS
 
-from tkinter import *
+import os
 import gfx
 import random
 from tkinter.messagebox import *
 from tkinter import *
 
+score = 0
 
 # FONCTIONS
+
+def menu():
+    menu = Tk()
+    menu.geometry("200x200")
+    menu.title("Menu")
+
+    import_btn = Button(menu, text="Importer", command=import_game)
+    import_btn.pack(pady=30)
+
+    save_btn = Button(menu, text="Sauvegarder", command=save_game)
+    save_btn.pack(pady=30)
+
+def import_game():
+    import json
+    global score
+    try:
+        with open("./code/game.json", "r") as game_saved:
+            data = json.load(game_saved)
+            for line in range(4):
+                for col in range(4):
+                    cases[line][col] = data["cases"][line][col]
+            score = data["score"]
+            gfx.display()
+        showinfo(title="Info", message="Votre jeu a été correctement chargé !")
+    except:
+        showinfo(title="Info", message="Une erreur est survenue")
+
+def save_game():
+    import json
+    try:
+        with open("./code/game.json", "w") as game_file:
+            game = {"cases": cases, "score": score}
+            json.dump(game, game_file, indent=2)
+            showinfo(title="Info", message="Votre jeu a été sauvegardé !")
+    except:
+        showinfo(title="Info", message="Une erreur est survenue")
 
 def Isgameover():
     cpt_possibles_moves = 0
@@ -36,9 +73,9 @@ def Isgameover():
         print(cpt_possibles_moves)
         showinfo(title="Game Over !", message="Le jeu est fini !")
 
-
 # Cette fonction sert à fusionner les cases
 def pack4(a, b, c, d):
+    score = 0
     cpt = 0
     if 0 in (a, b, c):
         if c == 0 and d > 0:
@@ -53,13 +90,16 @@ def pack4(a, b, c, d):
     if a == b and a > 0:
         a,b,c,d = a * 2, c, d, 0
         cpt += 1
+        score += a
     if b == c and b > 0:
         b, c, d = b * 2, d, 0
         cpt += 1
+        score += b
     if c == d and c > 0:
         c, d = c * 2, 0
         cpt += 1
-    return [a, b, c, d, cpt]
+        score += c
+    return [a, b, c, d, cpt, score]
 
 # Cette fonction sert à faire apparaître des blocs dans une case vide aléatoire à chaque mouvement
 def RandomAppear():
@@ -84,7 +124,8 @@ def Isthere2048():
                 done = True
 
 # Cette fonction sert juste à ne pas répéter certaines instructions communes à toutes les fonctions suivantes
-def key_pressed_actions(cpt_tot, event):
+def key_pressed_actions(cpt_tot, score_tot, event):
+    global score
     print()
     print("Effectué en", cpt_tot, "coups")
     if cpt_tot > 0:
@@ -94,48 +135,72 @@ def key_pressed_actions(cpt_tot, event):
         Isgameover()
     else:
         print("Aucun coup n'a été effectué")
+    score += score_tot
+    print(score)
     gfx.display()
 
 # Cette fonction sert à détecter si la touche flèche du haut a été pressée
 def Up(event):
+    score_tot = 0
+    score = 0
     get_cpt = 0
     cpt_tot = 0
     for col in range(4):
-        cases[0][col], cases[1][col], cases[2][col], cases[3][col], get_cpt = pack4(cases[0][col], cases[1][col], cases[2][col], cases[3][col])
+        cases[0][col], cases[1][col], cases[2][col], cases[3][col], get_cpt, score = pack4(cases[0][col], cases[1][col], cases[2][col], cases[3][col])
         cpt_tot = cpt_tot + get_cpt
-    key_pressed_actions(cpt_tot, event)
+        score_tot += score
+    key_pressed_actions(cpt_tot, score_tot, event)
 
 # Cette fonction sert à détecter si la touche flèche du bas a été pressée
 def Down(event):
+    score_tot = 0
+    score = 0
     get_cpt = 0
     cpt_tot = 0
     for col in range(4):
-        cases[3][col], cases[2][col], cases[1][col], cases[0][col], get_cpt = pack4(cases[3][col], cases[2][col], cases[1][col], cases[0][col])
+        cases[3][col], cases[2][col], cases[1][col], cases[0][col], get_cpt, score = pack4(cases[3][col], cases[2][col], cases[1][col], cases[0][col])
         cpt_tot = cpt_tot + get_cpt
-    key_pressed_actions(cpt_tot, event)
+        score_tot += score
+    key_pressed_actions(cpt_tot, score_tot, event)
 
 # Cette fonction sert à détecter si la touche flèche de gauche a été pressée
 def Left(event):
+    score_tot = 0
+    score = 0
     get_cpt = 0
     cpt_tot = 0
     for row in range(4):
-        cases[row][0], cases[row][1], cases[row][2], cases[row][3], get_cpt = pack4(cases[row][0], cases[row][1], cases[row][2], cases[row][3])
+        cases[row][0], cases[row][1], cases[row][2], cases[row][3], get_cpt, score = pack4(cases[row][0], cases[row][1], cases[row][2], cases[row][3])
         cpt_tot = cpt_tot + get_cpt
-    key_pressed_actions(cpt_tot, event)
+        score_tot += score
+    key_pressed_actions(cpt_tot, score_tot, event)
 
 # Cette fonction sert à détecter si la touche flèche de droite a été pressée
 def Right(event):
+    score_tot = 0
+    score = 0
     get_cpt = 0
     cpt_tot = 0
     for row in range(4):
-        cases[row][3], cases[row][2], cases[row][1], cases[row][0], get_cpt = pack4(cases[row][3], cases[row][2], cases[row][1], cases[row][0])
+        cases[row][3], cases[row][2], cases[row][1], cases[row][0], get_cpt, score = pack4(cases[row][3], cases[row][2], cases[row][1], cases[row][0])
         cpt_tot = cpt_tot + get_cpt
-    key_pressed_actions(cpt_tot, event)
+        score_tot += score
+    key_pressed_actions(cpt_tot, score_tot, event)
+
+def restart():
+    global score
+    for line in range(4):
+        for col in range(4):
+            cases[line][col] = 0
+    score = 0
+    RandomAppear()
+    RandomAppear()
+    gfx.display()
 
 # TABLEAUX
 
 # Tableau des numéros de cases
 cases = [[0, 0, 0, 0],
-         [0, 0, 0, 0],
-         [0, 0, 0, 0],
-         [0, 0, 0, 0],]
+         [0, 2, 0, 0],
+         [0, 0, 2, 0],
+         [0, 0, 0, 0]]
